@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation - AgroVision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+    <div
+        class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
+        <div class="flex items-center justify-between mb-6">
+            <a href="/" class="text-green-400 hover:text-green-300 transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Home
+            </a>
+            <h1 class="text-3xl font-bold text-green-400">Crop Recommendation</h1>
+        </div>
+
+        <p class="text-gray-300 mb-8">
+            Find the best crops for your land based on soil, weather, and environmental conditions.
+        </p>
+
+        <form id="cropRecommendationForm" class="space-y-4">
+            <div class="flex flex-col">
+                <label for="nitrogen" class="text-gray-400 mb-2">Nitrogen (N)</label>
+                <input type="number" id="nitrogen" placeholder="Enter nitrogen value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="phosphorus" class="text-gray-400 mb-2">Phosphorus (P)</label>
+                <input type="number" id="phosphorus" placeholder="Enter phosphorus value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="potassium" class="text-gray-400 mb-2">Potassium (K)</label>
+                <input type="number" id="potassium" placeholder="Enter potassium value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="temperature" class="text-gray-400 mb-2">Temperature (°C)</label>
+                <input type="number" id="temperature" placeholder="Enter temperature"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="humidity" class="text-gray-400 mb-2">Humidity (%)</label>
+                <input type="number" id="humidity" placeholder="Enter humidity percentage"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="soil-ph" class="text-gray-400 mb-2">Soil pH</label>
+                <input type="number" id="soil-ph" placeholder="Enter soil pH"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="rainfall" class="text-gray-400 mb-2">Rainfall (mm)</label>
+                <input type="number" id="rainfall" placeholder="Enter rainfall"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <button type="submit"
+                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                Submit
+            </button>
+        </form>
+
+        <div id="resultContainer" class="mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-4 text-green-400">Recommended Crops</h2>
+            <div id="recommendedCrops" class="bg-gray-700 p-4 rounded-lg text-gray-300">
+                <!-- Recommended crops will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('cropRecommendationForm').addEventListener('submit', async function (e) {
+    e.preventDefault(); // Prevent form submission
+
+    // Gather input values
+    const nitrogen = document.getElementById('nitrogen').value;
+    const phosphorus = document.getElementById('phosphorus').value;
+    const potassium = document.getElementById('potassium').value;
+    const temperature = document.getElementById('temperature').value;
+    const humidity = document.getElementById('humidity').value;
+    const soilPh = document.getElementById('soil-ph').value;
+    const rainfall = document.getElementById('rainfall').value;
+
+    // Prepare data to send to the backend
+    const requestData = {
+        nitrogen: parseFloat(nitrogen),
+        phosphorus: parseFloat(phosphorus),
+        potassium: parseFloat(potassium),
+        temperature: parseFloat(temperature),
+        humidity: parseFloat(humidity),
+        ph: parseFloat(soilPh),
+        rainfall: parseFloat(rainfall),
+    };
+
+    try {
+        // Send POST request to the Flask API
+        const response = await fetch('/recommend', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+        });
+
+        const data = await response.json();
+
+        // Handle response
+        const resultContainer = document.getElementById('resultContainer');
+        const recommendedCrops = document.getElementById('recommendedCrops');
+
+        if (response.ok) {
+            // Display recommended crops
+            resultContainer.classList.remove('hidden');
+            recommendedCrops.innerHTML = `<p class="text-lg font-bold text-green-400">${data.recommended_crop}</p>`;
+        } else {
+            // Show error message
+            alert(data.error || 'An error occurred while processing the request.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to fetch crop recommendations. Please try again later.');
+    }
+});
+
+    </script>
+</body>
+
+</html>

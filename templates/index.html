@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroVision - Agricultural Solutions</title>
+    <style>
+        .container {
+            word-wrap: break-word;
+            /* Ensures long words wrap */
+            overflow-wrap: break-word;
+            /* Alternative for wrapping */
+            text-align: center;
+            /* Centers the text */
+            padding: 10px;
+            /* Ensures spacing inside */
+            box-sizing: border-box;
+            /* Includes padding in container size */
+        }
+    </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 to-green-900 min-h-screen flex items-center justify-center">
+    <div
+        class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
+        <div class="text-center mb-10">
+            <h1 class="text-5xl font-extrabold mb-4 text-green-400 drop-shadow-lg">AgroVision</h1>
+            <p class="text-gray-300 max-w-md mx-auto">
+                Empowering farmers with cutting-edge agricultural technology and intelligent solutions
+            </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="/cropdisease" class="transform transition-all hover:scale-105">
+                <div
+                    class="bg-green-600/20 border border-green-500/30 p-6 rounded-xl text-center hover:bg-green-600/30 group">
+                    <div class="mb-4 flex justify-center">
+                        <svg class="w-12 h-12 text-green-400 group-hover:text-green-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-green-400 mb-2">Crop Disease</h3>
+                    <p class="text-gray-300 text-sm">Predict and diagnose crop health issues</p>
+                </div>
+            </a>
+
+            <a href="/croprecommendation" class="transform transition-all hover:scale-105">
+                <div
+                    class="bg-blue-600/20 border border-blue-500/30 p-6 rounded-xl text-center hover:bg-blue-600/30 group">
+                    <div class="mb-4 flex justify-center">
+                        <svg class="w-12 h-12 text-blue-400 group-hover:text-blue-300" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 01-4.445-4.556l-.671-3.836a2 2 0 00-.985-1.355L9.159 4.63A2 2 0 006.5 6.5L4 16c0 1.657 3.134 3 7 3s7-1.343 7-3c0-.232-.142-.463-.428-.572z">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-blue-400 mb-2">Crop Recommendation</h3>
+                    <p class="text-gray-300 text-sm">Find the best crops for your land</p>
+                </div>
+            </a>
+
+            <a href="/fertilizerrecommendation" class="transform transition-all hover:scale-105">
+                <div
+                    class="bg-yellow-600/20 border border-yellow-500/30 p-6 rounded-xl text-center hover:bg-yellow-600/30 group">
+                    <div class="mb-4 flex justify-center">
+                        <svg class="w-12 h-12 text-yellow-400 group-hover:text-yellow-300" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253">
+                            </path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold text-yellow-400 mb-2">Fertilizer Guide</h3>
+                    <p class="text-gray-300 text-sm">Optimize nutrient management</p>
+                </div>
+            </a>
+        </div>
+
+        <footer class="mt-10 text-center text-gray-500">
+            <div class="flex justify-center space-x-4 mb-4">
+                <a href="#" class="hover:text-green-400 transition-colors">About</a>
+                <a href="#" class="hover:text-green-400 transition-colors">Contact</a>
+                <a href="#" class="hover:text-green-400 transition-colors">Help</a>
+            </div>
+            <p class="text-sm">© 2024 AgroVision. All Rights Reserved.</p>
+        </footer>
+    </div>
+</body>
+
+</html>
