@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Recommendation - AgroVision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+    <div
+        class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
+        <div class="flex items-center justify-between mb-6">
+            <a href="/" class="text-green-400 hover:text-green-300 transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Home
+            </a>
+            <h1 class="text-3xl font-bold text-green-400">Crop Recommendation</h1>
+        </div>
+
+        <p class="text-gray-300 mb-8">
+            Find the best crops for your land based on soil, weather, and environmental conditions.
+        </p>
+
+        <form action="/predict_crop" id="cropRecommendationForm" class="space-y-4" method="POST">
+            <div class="flex flex-col">
+                <label for="nitrogen" class="text-gray-400 mb-2">Nitrogen (N)</label>
+                <input type="number" id="nitrogen" placeholder="Enter nitrogen value" name="nitrogen"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="phosphorus" class="text-gray-400 mb-2">Phosphorus (P)</label>
+                <input type="number" id="phosphorus" placeholder="Enter phosphorus value" name="phosphorus"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="potassium" class="text-gray-400 mb-2">Potassium (K)</label>
+                <input type="number" id="potassium" placeholder="Enter potassium value" name="potassium"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="temperature" class="text-gray-400 mb-2">Temperature (°C)</label>
+                <input type="number" id="temperature" placeholder="Enter temperature" name="temperature"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="humidity" class="text-gray-400 mb-2">Humidity (%)</label>
+                <input type="number" id="humidity" placeholder="Enter humidity percentage" name="humidity"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="soil-ph" class="text-gray-400 mb-2">Soil pH</label>
+                <input type="number" id="soil-ph" placeholder="Enter soil pH" name="ph"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <div class="flex flex-col">
+                <label for="rainfall" class="text-gray-400 mb-2">Rainfall (mm)</label>
+                <input type="number" id="rainfall" placeholder="Enter rainfall" name="rainfall"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500">
+            </div>
+
+            <button type="submit"
+                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                Submit
+            </button>
+        </form>
+        <h2>{{ prediction_text }}</h2>  
+
+    </div>
+
+    
+</body>
+
+</html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crop Disease Prediction - AgroVision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
+</head>
+
+<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+    <div
+        class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
+        <div class="flex items-center justify-between mb-6">
+            <a href="/" class="text-green-400 hover:text-green-300 transition-colors flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Home
+            </a>
+            <h1 class="text-3xl font-bold text-green-400">Crop Disease Prediction</h1>
+        </div>
+
+        <p class="text-gray-300 mb-8">
+            Detect and diagnose crop health issues with our advanced AI-powered disease prediction tool.
+        </p>
+
+        <form id="diseaseUploadForm" class="space-y-4">
+            <div class="flex flex-col items-center">
+                <label for="file" class="block mb-2 text-gray-400">
+                    Upload Crop Image
+                </label>
+                <input type="file" id="file" name="file" accept="image/*"
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-500 file:text-white hover:file:bg-green-600">
+            </div>
+
+            <div class="flex flex-col items-center">
+                <button type="submit"
+                    class="w-full bg-green-500 text-white py-2 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                    Predict Disease
+                </button>
+            </div>
+        </form>
+
+        <div id="resultContainer" class="mt-6 hidden">
+            <h2 class="text-xl font-semibold mb-4 text-green-400">Prediction Results</h2>
+            <div id="analysisResults" class="bg-gray-700 p-4 rounded-lg text-gray-300">
+                <p id="resultText" class="text-center">
+                    Prediction will be displayed here
+                </p>
+                <div id="diseaseDetails" class="mt-4">
+                    <h3 class="font-semibold text-gray-200">Details:</h3>
+                    <ul id="diseaseDetailsList" class="list-disc list-inside text-gray-300">
+                        <!-- Dynamically populated disease details -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById('diseaseUploadForm');
+        const resultContainer = document.getElementById('resultContainer');
+        const resultText = document.getElementById('resultText');
+        const diseaseDetailsList = document.getElementById('diseaseDetailsList');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const fileInput = document.getElementById('file');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please upload an image file.');
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const { predicted_class, confidence } = data;
+
+                    resultText.textContent = `Predicted Class: ${predicted_class}`;
+                    diseaseDetailsList.innerHTML = `
+                        <li>Confidence: ${(confidence * 100).toFixed(2)}%</li>
+                    `;
+                } else {
+                    resultText.textContent = `Error: ${data.error}`;
+                    diseaseDetailsList.innerHTML = '';
+                }
+
+                resultContainer.classList.remove('hidden');
+            } catch (error) {
+                console.error('Error:', error);
+                resultText.textContent = 'An error occurred while processing the request.';
+                diseaseDetailsList.innerHTML = '';
+                resultContainer.classList.remove('hidden');
+            }
+        });
+    </script>
+</body>
+
+</html>
