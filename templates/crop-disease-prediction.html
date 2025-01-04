@@ -9,18 +9,30 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
 </head>
 
+<!-- <body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen pt-16"> -->
+
 <body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+    <nav class="bg-white/10 backdrop-blur-lg border-b border-white/10 fixed w-full top-0 left-0 z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/"
+                    class="text-green-400 hover:text-green-300 transition-colors text-xl font-bold">AgroVision</a>
+                <div class="flex space-x-8">
+                    <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                        Disease</a>
+                    <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                        Recommendation</a>
+                    <a href="/fertilizerrecommendation"
+                        class="text-green-400 hover:text-green-300 transition-colors">Fertilizer Guide</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
     <div
         class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
         <div class="flex items-center justify-between mb-6">
-            <a href="/" class="text-green-400 hover:text-green-300 transition-colors flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Home
-            </a>
+
             <h1 class="text-3xl font-bold text-green-400">Crop Disease Prediction</h1>
         </div>
 

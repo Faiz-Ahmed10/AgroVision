@@ -9,18 +9,29 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
 </head>
 
-<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen pt-16">
+
+    <!-- <body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center"> -->
+    <nav class="bg-white/10 backdrop-blur-lg border-b border-white/10 fixed w-full top-0 left-0 z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/"
+                    class="text-green-400 hover:text-green-300 transition-colors text-xl font-bold">AgroVision</a>
+                <div class="flex space-x-8">
+                    <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                        Disease</a>
+                    <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                        Recommendation</a>
+                    <a href="/fertilizerrecommendation"
+                        class="text-green-400 hover:text-green-300 transition-colors">Fertilizer Guide</a>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div
         class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
         <div class="flex items-center justify-between mb-6">
-            <a href="/" class="text-green-400 hover:text-green-300 transition-colors flex items-center">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Home
-            </a>
+
             <h1 class="text-3xl font-bold text-green-400">Fertilizer Recommendation</h1>
         </div>
 
@@ -31,58 +42,66 @@
         <form id="fertilizerRecommendationForm" class="space-y-4" method="POST" action="/fertilizer">
             <div class="flex flex-col">
                 <label for="temperature" class="text-gray-400 mb-2">Temperature</label>
-                <input type="number" step="any" id="temperature" name="temperature" placeholder="Enter temperature" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="temperature" name="temperature" placeholder="Enter temperature"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="humidity" class="text-gray-400 mb-2">Humidity</label>
-                <input type="number" step="any" id="humidity" name="humidity" placeholder="Enter humidity" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="humidity" name="humidity" placeholder="Enter humidity"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="moisture" class="text-gray-400 mb-2">Moisture</label>
-                <input type="number" step="any" id="moisture" name="moisture" placeholder="Enter moisture" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="moisture" name="moisture" placeholder="Enter moisture"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="soil_type" class="text-gray-400 mb-2">Soil Type (0-4)</label>
-                <input type="number" id="soil_type" name="soil_type" placeholder="Enter soil type (0-4)" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" id="soil_type" name="soil_type" placeholder="Enter soil type (0-4)"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="crop_type" class="text-gray-400 mb-2">Crop Type (0-6)</label>
-                <input type="number" id="crop_type" name="crop_type" placeholder="Enter crop type (0-6)" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" id="crop_type" name="crop_type" placeholder="Enter crop type (0-6)"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="nitrogen" class="text-gray-400 mb-2">Nitrogen (N)</label>
-                <input type="number" step="any" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen value" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="phosphorus" class="text-gray-400 mb-2">Phosphorus (P)</label>
-                <input type="number" step="any" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus value" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
+
             <div class="flex flex-col">
                 <label for="potassium" class="text-gray-400 mb-2">Potassium (K)</label>
-                <input type="number" step="any" id="potassium" name="potassium" placeholder="Enter potassium value" 
-                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                <input type="number" step="any" id="potassium" name="potassium" placeholder="Enter potassium value"
+                    class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
+                    required>
             </div>
-        
-            <button type="submit" 
+
+            <button type="submit"
                 class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
                 Predict
             </button>
         </form>
-        
+
         {% if result %}
         <h2>{{ result }}</h2>
         {% endif %}
