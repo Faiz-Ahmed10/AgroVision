@@ -2,12 +2,15 @@ from flask import Flask, request, jsonify, render_template
 import tensorflow as tf
 from tensorflow.keras.applications.resnet50 import preprocess_input
 from tensorflow.keras.preprocessing.image import img_to_array, load_img
+from googletrans import Translator
+import json
 import numpy as np
 import joblib
 from io import BytesIO
 
 # Initialize Flask app
 app = Flask(__name__)
+translator = Translator()
 
 # Load the trained .keras model
 MODEL_PATH = "models/final.keras"
@@ -195,6 +198,46 @@ def fertilizer():
         except Exception as e:
             return render_template('fertilizer-recommendation.html', result=f'Error: {str(e)}')
     return render_template('fertilizer-recommendation.html', result=None)
+
+
+translator = Translator()
+
+# Dictionary to map language codes
+LANGUAGE_CODES = {
+    'hindi': 'hi',
+    'urdu': 'ur',
+    'telugu': 'te'
+}
+
+def translate_text(text, target_lang):
+    """
+    Translate given text to target language
+    """
+    try:
+        translation = translator.translate(text, dest=target_lang)
+        return translation.text
+    except Exception as e:
+        print(f"Translation error: {e}")
+        return text
+
+@app.route('/translate', methods=['POST'])
+def translate_content():
+    try:
+        data = request.get_json()
+        text = data.get('text')
+        target_lang = data.get('language')
+        
+        if not text or not target_lang:
+            return jsonify({'error': 'Missing text or language parameter'}), 400
+            
+        if target_lang not in LANGUAGE_CODES:
+            return jsonify({'error': 'Unsupported language'}), 400
+            
+        translated_text = translate_text(text, LANGUAGE_CODES[target_lang])
+        return jsonify({'translated_text': translated_text})
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':

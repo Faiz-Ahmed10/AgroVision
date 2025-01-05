@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fertilizer Recommendation - AgroVision</title>
+    <title data-translate="Fertilizer Recommendation - AgroVision">Fertilizer Recommendation - AgroVision</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
 </head>
@@ -15,15 +15,17 @@
     <nav class="bg-white/10 backdrop-blur-lg border-b border-white/10 fixed w-full top-0 left-0 z-10">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
-                <a href="/"
-                    class="text-green-400 hover:text-green-300 transition-colors text-xl font-bold">AgroVision</a>
+                <a href="/" class="text-green-400 hover:text-green-300 transition-colors text-xl font-bold"
+                    data-translate="AgroVision">AgroVision</a>
                 <div class="flex space-x-8">
-                    <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                    <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Crop Disease">Crop
                         Disease</a>
-                    <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors">Crop
+                    <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Crop Recommendation">Crop
                         Recommendation</a>
-                    <a href="/fertilizerrecommendation"
-                        class="text-green-400 hover:text-green-300 transition-colors">Fertilizer Guide</a>
+                    <a href="/fertilizerrecommendation" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Fertilizer Guide">Fertilizer Guide</a>
                 </div>
             </div>
         </div>
@@ -32,82 +34,89 @@
         class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
         <div class="flex items-center justify-between mb-6">
 
-            <h1 class="text-3xl font-bold text-green-400">Fertilizer Recommendation</h1>
+            <h1 class="text-3xl font-bold text-green-400" data-translate="Fertilizer Recommendation">Fertilizer
+                Recommendation</h1>
         </div>
 
-        <p class="text-gray-300 mb-8">
+        <p class="text-gray-300 mb-8"
+            data-translate="Optimize your nutrient management with personalized fertilizer recommendations based on your soil analysis.">
             Optimize your nutrient management with personalized fertilizer recommendations based on your soil analysis.
         </p>
 
         <form id="fertilizerRecommendationForm" class="space-y-4" method="POST" action="/fertilizer">
             <div class="flex flex-col">
-                <label for="temperature" class="text-gray-400 mb-2">Temperature</label>
+                <label for="temperature" class="text-gray-400 mb-2" data-translate="Temperature">Temperature</label>
                 <input type="number" step="any" id="temperature" name="temperature" placeholder="Enter temperature"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="humidity" class="text-gray-400 mb-2">Humidity</label>
+                <label for="humidity" class="text-gray-400 mb-2" data-translate="Humidity">Humidity</label>
                 <input type="number" step="any" id="humidity" name="humidity" placeholder="Enter humidity"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="moisture" class="text-gray-400 mb-2">Moisture</label>
+                <label for="moisture" class="text-gray-400 mb-2" data-translate="Moisture">Moisture</label>
                 <input type="number" step="any" id="moisture" name="moisture" placeholder="Enter moisture"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="soil_type" class="text-gray-400 mb-2">Soil Type (0-4)</label>
+                <label for="soil_type" class="text-gray-400 mb-2" data-translate="Soil Type (0-4)">Soil Type
+                    (0-4)</label>
                 <input type="number" id="soil_type" name="soil_type" placeholder="Enter soil type (0-4)"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="crop_type" class="text-gray-400 mb-2">Crop Type (0-6)</label>
+                <label for="crop_type" class="text-gray-400 mb-2" data-translate="Crop Type (0-6)">Crop Type
+                    (0-6)</label>
                 <input type="number" id="crop_type" name="crop_type" placeholder="Enter crop type (0-6)"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="nitrogen" class="text-gray-400 mb-2">Nitrogen (N)</label>
+                <label for="nitrogen" class="text-gray-400 mb-2" data-translate="Nitrogen (N)">Nitrogen (N)</label>
                 <input type="number" step="any" id="nitrogen" name="nitrogen" placeholder="Enter nitrogen value"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="phosphorus" class="text-gray-400 mb-2">Phosphorus (P)</label>
+                <label for="phosphorus" class="text-gray-400 mb-2" data-translate="Phosphorus (P)">Phosphorus
+                    (P)</label>
                 <input type="number" step="any" id="phosphorus" name="phosphorus" placeholder="Enter phosphorus value"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <div class="flex flex-col">
-                <label for="potassium" class="text-gray-400 mb-2">Potassium (K)</label>
+                <label for="potassium" class="text-gray-400 mb-2" data-translate="Potassium (K)">Potassium (K)</label>
                 <input type="number" step="any" id="potassium" name="potassium" placeholder="Enter potassium value"
                     class="bg-gray-700 text-white p-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500"
                     required>
             </div>
 
             <button type="submit"
-                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500">
+                class="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-500"
+                data-translate="Predict">
                 Predict
             </button>
         </form>
 
         {% if result %}
-        <h2>{{ result }}</h2>
+        <h2 data-translate="{{ result }}">{{ result }}</h2>
         {% endif %}
 
         <div id="resultContainer" class="mt-6 hidden">
-            <h2 class="text-xl font-semibold mb-4 text-green-400">Recommended Fertilizers</h2>
+            <h2 class="text-xl font-semibold mb-4 text-green-400" data-translate="Recommended Fertilizers">Recommended
+                Fertilizers</h2>
             <div id="recommendedFertilizers" class="bg-gray-700 p-4 rounded-lg text-gray-300">
                 <!-- Recommended fertilizers will be displayed here -->
             </div>
@@ -117,6 +126,8 @@
     <script>
         // Your existing fertilizer recommendation logic
     </script>
+
+    <script src="/static/js/translation.js"></script>
 </body>
 
 </html>
