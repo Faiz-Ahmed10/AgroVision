@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroVision Chatbot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body
+    class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center pt-20">
+    <nav class="bg-white/10 backdrop-blur-lg border-b border-white/10 fixed w-full top-0 left-0 z-10">
+        <div class="max-w-6xl mx-auto px-4">
+            <div class="flex items-center justify-between h-16">
+                <a href="/" class="text-green-400 hover:text-green-300 transition-colors text-xl font-bold"
+                    data-translate="AgroVision">AgroVision</a>
+                <div class="flex space-x-8">
+                    <a href="/chat" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Ask Chatbot">Ask Chatbot</a>
+                    <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Crop Disease">Crop Disease</a>
+                    <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Crop Recommendation">Crop Recommendation</a>
+                    <a href="/fertilizerrecommendation" class="text-green-400 hover:text-green-300 transition-colors"
+                        data-translate="Fertilizer Guide">Fertilizer Guide</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div class="max-w-lg w-full bg-white/10 backdrop-blur-lg rounded-xl p-6 shadow-2xl">
+        <h1 class="text-3xl text-center font-bold text-green-400 mb-6">AgroVision Chatbot</h1>
+
+        <div id="chatArea" class="overflow-y-auto h-64 mb-4 p-4 bg-gray-800 rounded-lg">
+            <!-- Chat messages will be dynamically displayed here -->
+        </div>
+
+        <div class="flex">
+            <input type="text" id="userMessage" placeholder="Ask about crop disease, fertilizers, etc." class="w-full px-4 py-2 rounded-l-lg bg-gray-700 text-white focus:outline-none">
+            <button onclick="sendMessage()" class="bg-green-500 text-white px-4 py-2 rounded-r-lg hover:bg-green-600" data-translate="Send">
+                Send
+            </button>
+        </div>
+    </div>
+
+    <script src="/static/js/translation.js"></script>
+    <script>
+        const chatArea = document.getElementById("chatArea");
+        const userMessageInput = document.getElementById("userMessage");
+
+        async function sendMessage() {
+            const userMessage = userMessageInput.value.trim();
+            if (userMessage) {
+                appendMessage(userMessage, "user");
+                userMessageInput.value = "";
+                
+                // Send user message to the backend (Flask API)
+                const response = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: userMessage })
+                });
+
+                const data = await response.json();
+                appendMessage(data.response, "bot");
+            }
+        }
+
+        function appendMessage(message, sender) {
+            const messageDiv = document.createElement("div");
+            messageDiv.classList.add(sender === "user" ? "text-right" : "text-left");
+            messageDiv.innerHTML = `<p class="inline-block text-white bg-gray-700 p-2 rounded-xl mt-2" data-translate="${message}">${message}</p>`;
+            chatArea.appendChild(messageDiv);
+            chatArea.scrollTop = chatArea.scrollHeight;  // Scroll to bottom
+        }
+    </script>
+</body>
+</html>

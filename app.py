@@ -278,6 +278,33 @@ def translate_content():
         return jsonify({'error': str(e)}), 500
 
 
+genai.configure(api_key="AIzaSyDVwCinSYUfR6sNb4rkA40IwGofB0fQ554")
+gen_model2 = genai.GenerativeModel("gemini-1.5-flash")
+
+
+@app.route("/chat")
+def chat_page():
+    # Render the chatbot.html page when accessing /chat
+    return render_template("chat.html")
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    user_input = request.json.get("message")
+    
+    if not user_input:
+        return jsonify({"response": "Please provide a message."})
+    
+    # Get a response from the Gemini API
+    try:
+        response = gen_model2.generate_content(user_input)
+        bot_reply = response.text
+    except Exception as e:
+        bot_reply = f"Error: {str(e)}"
+    
+    return jsonify({"response": bot_reply})
+
+
+
 if __name__ == '__main__':
     app.run(debug=True)
     
