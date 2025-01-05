@@ -9,9 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/lucide-static@0.321.0/icons.min.js"></script>
 </head>
 
-<!-- <body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen pt-16"> -->
-
-<body class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center">
+<body
+    class="bg-gradient-to-br from-gray-900 to-green-900 text-white min-h-screen flex items-center justify-center pt-20">
     <nav class="bg-white/10 backdrop-blur-lg border-b border-white/10 fixed w-full top-0 left-0 z-10">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex items-center justify-between h-16">
@@ -19,11 +18,9 @@
                     data-translate="AgroVision">AgroVision</a>
                 <div class="flex space-x-8">
                     <a href="/cropdisease" class="text-green-400 hover:text-green-300 transition-colors"
-                        data-translate="Crop Disease">Crop
-                        Disease</a>
+                        data-translate="Crop Disease">Crop Disease</a>
                     <a href="/croprecommendation" class="text-green-400 hover:text-green-300 transition-colors"
-                        data-translate="Crop Recommendatin">Crop
-                        Recommendation</a>
+                        data-translate="Crop Recommendation">Crop Recommendation</a>
                     <a href="/fertilizerrecommendation" class="text-green-400 hover:text-green-300 transition-colors"
                         data-translate="Fertilizer Guide">Fertilizer Guide</a>
                 </div>
@@ -32,9 +29,8 @@
     </nav>
 
     <div
-        class="container mx-auto max-w-lg p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
+        class="container mx-auto max-w-2xl p-8 bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl border border-white/10">
         <div class="flex items-center justify-between mb-6">
-
             <h1 class="text-3xl font-bold text-green-400" data-translate="Crop Disease Detection">Crop Disease
                 Prediction</h1>
         </div>
@@ -51,6 +47,11 @@
                 </label>
                 <input type="file" id="file" name="file" accept="image/*"
                     class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-500 file:text-white hover:file:bg-green-600">
+            </div>
+
+            <!-- Image Preview Container -->
+            <div id="imagePreview" class="hidden mt-4">
+                <img id="previewImage" src="" alt="Preview" class="max-w-full h-auto rounded-lg mx-auto">
             </div>
 
             <div class="flex flex-col items-center">
@@ -85,6 +86,21 @@
         const resultContainer = document.getElementById('resultContainer');
         const resultText = document.getElementById('resultText');
         const diseaseDetailsList = document.getElementById('diseaseDetailsList');
+        const imagePreview = document.getElementById('imagePreview');
+        const previewImage = document.getElementById('previewImage');
+
+        // Add image preview functionality
+        document.getElementById('file').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewImage.src = e.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            }
+        });
 
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
