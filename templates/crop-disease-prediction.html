@@ -73,46 +73,157 @@
         </div>
     </div>
 
+    <style>
+        .read-aloud-btn, .stop-reading-btn {
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .read-aloud-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        
+        .stop-reading-btn {
+            background-color: #f44336;
+            color: white;
+        }
+        
+        .read-aloud-btn:hover, .stop-reading-btn:hover {
+            opacity: 0.9;
+        }
+        </style>
     <script>
         const form = document.getElementById('diseaseUploadForm');
         const resultContainer = document.getElementById('resultContainer');
         const resultText = document.getElementById('resultText');
         const diseaseDetailsList = document.getElementById('diseaseDetailsList');
-
+    
+        // Language mapping for common languages
+        const languageMap = {
+            'en': 'en-US',    // English
+            'es': 'es-ES',    // Spanish
+            'fr': 'fr-FR',    // French
+            'de': 'de-DE',    // German
+            'it': 'it-IT',    // Italian
+            'pt': 'pt-BR',    // Portuguese
+            'hi': 'hi-IN',    // Hindi
+            'ja': 'ja-JP',    // Japanese
+            'ko': 'ko-KR',    // Korean
+            'zh': 'zh-CN',    // Chinese
+            'ar': 'ar-SA',    // Arabic
+            'ru': 'ru-RU',    // Russian
+            'bn': 'bn-IN',    // Bengali
+            'ta': 'ta-IN',    // Tamil
+            'te': 'te-IN'     // Telugu
+        };
+    
+        // Function to detect language using language patterns
+        function detectLanguage(text) {
+            // Check for specific script ranges
+            const scripts = {
+                'zh': /[\u4E00-\u9FFF]/,     // Chinese
+                'ja': /[\u3040-\u309F\u30A0-\u30FF]/,  // Japanese
+                'ko': /[\uAC00-\uD7AF\u1100-\u11FF]/,  // Korean
+                'hi': /[\u0900-\u097F]/,     // Hindi
+                'bn': /[\u0980-\u09FF]/,     // Bengali
+                'ta': /[\u0B80-\u0BFF]/,     // Tamil
+                'te': /[\u0C00-\u0C7F]/,     // Telugu
+                'ar': /[\u0600-\u06FF]/,     // Arabic
+                'ru': /[\u0400-\u04FF]/,     // Russian
+            };
+    
+            for (let [lang, pattern] of Object.entries(scripts)) {
+                if (pattern.test(text)) {
+                    return languageMap[lang];
+                }
+            }
+    
+            // Default to English if no specific script is detected
+            return 'en-US';
+        }
+    
         form.addEventListener('submit', async (e) => {
             e.preventDefault();
-
+    
             const fileInput = document.getElementById('file');
             const file = fileInput.files[0];
-
+    
             if (!file) {
                 alert('Please upload an image file.');
                 return;
             }
-
+    
             const formData = new FormData();
             formData.append('file', file);
-
+    
             try {
                 const response = await fetch('/predict', {
                     method: 'POST',
                     body: formData,
                 });
-
+    
                 const data = await response.json();
-
+    
                 if (response.ok) {
-                    const { predicted_class, confidence } = data;
-
+                    const { predicted_class, confidence, precautions } = data;
+                    
+                    // Parse precautions from string to array
+                    const precautionsList = precautions
+                        .replace('[', '')
+                        .replace(']', '')
+                        .split(',')
+                        .map(p => p.trim().replace(/'/g, ''));
+                    
+                    // Store precautions with their detected languages
+                    const precautionsWithLang = precautionsList.map(p => ({
+                        text: p,
+                        lang: detectLanguage(p)
+                    }));
+                    
+                    // Create readable text sections with language markers
+                    const readableText = `The predicted disease is ${predicted_class} with ${(confidence * 100).toFixed(2)}% confidence.\n\nRecommended precautions:\n${
+                        precautionsWithLang.map(p => p.text).join('\n')
+                    }`;
+                    
+                    // Update the display
                     resultText.textContent = `Predicted Class: ${predicted_class}`;
+                    
+                    // Create precautions HTML with language attributes
+                    const precautionsHtml = precautionsWithLang
+                        .map(p => `<li class="mb-2" data-lang="${p.lang}">• ${p.text}</li>`)
+                        .join('');
+                    
                     diseaseDetailsList.innerHTML = `
                         <li>Confidence: ${(confidence * 100).toFixed(2)}%</li>
+                        <li class="mt-3">
+                            <strong>Recommended Precautions:</strong>
+                            <ul class="ml-4 mt-2">
+                                ${precautionsHtml}
+                            </ul>
+                        </li>
+                        <li class="mt-3">
+                            <p id="readableResult" class="hidden">${readableText}</p>
+                            <button onclick="readAloudMultiLang('readableResult')" class="read-aloud-btn">
+                                <i class="fas fa-volume-up"></i> Read Results
+                            </button>
+                            <button onclick="stopReading()" class="stop-reading-btn">
+                                <i class="fas fa-stop"></i> Stop Reading
+                            </button>
+                        </li>
                     `;
                 } else {
                     resultText.textContent = `Error: ${data.error}`;
                     diseaseDetailsList.innerHTML = '';
                 }
-
+    
                 resultContainer.classList.remove('hidden');
             } catch (error) {
                 console.error('Error:', error);
@@ -121,6 +232,60 @@
                 resultContainer.classList.remove('hidden');
             }
         });
+    
+        // New function to handle multi-language text-to-speech
+        async function readAloudMultiLang(textId) {
+            const textElement = document.getElementById(textId);
+            if (!textElement) return;
+            
+            // Split the text into sections
+            const textSections = textElement.innerText.split('\n').filter(t => t.trim());
+            
+            // Cancel any ongoing speech
+            window.speechSynthesis.cancel();
+            
+            // Queue up each section with appropriate language
+            for (const section of textSections) {
+                // Create utterance for this section
+                const utterance = new SpeechSynthesisUtterance(section);
+                
+                // Detect language for this specific section
+                const detectedLang = detectLanguage(section);
+                utterance.lang = detectedLang;
+                
+                // Get voices and try to find matching voice
+                const voices = window.speechSynthesis.getVoices();
+                const voice = voices.find(v => v.lang.startsWith(detectedLang.split('-')[0]));
+                if (voice) {
+                    utterance.voice = voice;
+                }
+                
+                // Configure speech parameters
+                utterance.rate = 1.0;
+                utterance.pitch = 1.0;
+                utterance.volume = 1.0;
+                
+                // Handle errors
+                utterance.onerror = (event) => {
+                    console.error('Speech synthesis error:', event);
+                };
+                
+                // Queue this section
+                window.speechSynthesis.speak(utterance);
+            }
+        }
+    
+        // Function to stop reading
+        function stopReading() {
+            window.speechSynthesis.cancel();
+        }
+    
+        // Load voices when they're available
+        if (speechSynthesis.onvoiceschanged !== undefined) {
+            speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
+        }
     </script>
 </body>
 
