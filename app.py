@@ -8,6 +8,9 @@ import numpy as np
 import joblib
 from io import BytesIO
 
+import google.generativeai as genai
+
+
 # Initialize Flask app
 app = Flask(__name__)
 translator = Translator()
@@ -34,236 +37,7 @@ CLASS_NAMES = [
     "Tomato Mosaic Virus", "Tomato Healthy"
 ]
 
-DISEASE_PRECAUTIONS = {
-    "Apple Scab": [
-        "Remove and destroy fallen infected leaves",
-        "Prune trees to improve air circulation",
-        "Apply fungicides early in the growing season",
-        "Plant disease-resistant apple varieties"
-    ],
-    "Apple Black Rot": [
-        "Remove mummified fruits from trees and ground",
-        "Prune out dead or diseased wood",
-        "Maintain good sanitation in the orchard",
-        "Apply appropriate fungicides during growing season"
-    ],
-    "Apple Cedar Rust": [
-        "Remove nearby cedar trees if possible",
-        "Apply preventive fungicides in spring",
-        "Choose resistant apple varieties",
-        "Maintain proper tree spacing for ventilation"
-    ],
-    "Apple Healthy": [
-        "Regular pruning for good air circulation",
-        "Maintain proper fertilization schedule",
-        "Regular monitoring for early disease detection",
-        "Practice proper watering techniques"
-    ],
-    "Blueberry Healthy": [
-        "Maintain soil pH between 4.5 and 5.5",
-        "Provide adequate mulching",
-        "Ensure proper irrigation",
-        "Regular pruning for plant health"
-    ],
-    "Cherry Powdery Mildew": [
-        "Improve air circulation through pruning",
-        "Apply fungicides at first sign of disease",
-        "Avoid overhead irrigation",
-        "Remove infected plant parts"
-    ],
-    "Cherry Healthy": [
-        "Regular pruning maintenance",
-        "Proper fertilization program",
-        "Adequate spacing between trees",
-        "Monitor for pest and disease issues"
-    ],
-    "Corn Cercospora Leaf Spot": [
-        "Rotate crops with non-host plants",
-        "Remove crop debris after harvest",
-        "Use resistant hybrids when available",
-        "Apply fungicides when necessary"
-    ],
-    "Corn Common Rust": [
-        "Plant resistant corn varieties",
-        "Early planting to avoid optimal rust conditions",
-        "Monitor fields regularly",
-        "Apply appropriate fungicides if needed"
-    ],
-    "Corn Northern Leaf Blight": [
-        "Rotate with non-host crops",
-        "Plant resistant varieties",
-        "Remove or plow under crop debris",
-        "Apply fungicides at first sign of disease"
-    ],
-    "Corn Healthy": [
-        "Maintain proper plant spacing",
-        "Follow recommended fertilization",
-        "Regular monitoring for diseases",
-        "Proper irrigation management"
-    ],
-    "Grape Black Rot": [
-        "Remove mummified berries and infected leaves",
-        "Improve air circulation through pruning",
-        "Apply protective fungicides",
-        "Maintain proper canopy management"
-    ],
-    "Grape Esca (Black Measles)": [
-        "Remove and destroy infected vines",
-        "Avoid pruning during wet weather",
-        "Protect pruning wounds",
-        "Maintain vine vigor through proper nutrition"
-    ],
-    "Grape Leaf Blight": [
-        "Improve air circulation in vineyard",
-        "Remove infected plant material",
-        "Apply appropriate fungicides",
-        "Avoid overhead irrigation"
-    ],
-    "Grape Healthy": [
-        "Regular pruning and training",
-        "Proper fertilization schedule",
-        "Maintain good air circulation",
-        "Monitor for early disease signs"
-    ],
-    "Orange Haunglongbing (Citrus Greening)": [
-        "Control psyllid populations",
-        "Remove infected trees immediately",
-        "Use disease-free nursery stock",
-        "Regular monitoring for symptoms"
-    ],
-    "Peach Bacterial Spot": [
-        "Use copper-based sprays preventively",
-        "Prune during dry weather",
-        "Avoid overhead irrigation",
-        "Plant resistant varieties"
-    ],
-    "Peach Healthy": [
-        "Regular pruning maintenance",
-        "Proper fertilization program",
-        "Monitor for pest issues",
-        "Maintain good orchard sanitation"
-    ],
-    "Pepper Bell Bacterial Spot": [
-        "Rotate crops with non-hosts",
-        "Use disease-free seeds",
-        "Avoid working with wet plants",
-        "Apply copper-based products preventively"
-    ],
-    "Pepper Bell Healthy": [
-        "Maintain proper spacing",
-        "Regular fertilization",
-        "Monitor for pest issues",
-        "Proper irrigation practices"
-    ],
-    "Potato Early Blight": [
-        "Practice crop rotation",
-        "Remove infected plant debris",
-        "Apply fungicides preventively",
-        "Maintain proper plant spacing"
-    ],
-    "Potato Late Blight": [
-        "Monitor weather conditions",
-        "Apply fungicides before disease onset",
-        "Destroy volunteer potato plants",
-        "Plant resistant varieties"
-    ],
-    "Potato Healthy": [
-        "Proper hilling of plants",
-        "Regular fertilization",
-        "Monitor for disease symptoms",
-        "Maintain proper irrigation"
-    ],
-    "Raspberry Healthy": [
-        "Regular pruning of old canes",
-        "Maintain good air circulation",
-        "Proper fertilization program",
-        "Monitor for pest issues"
-    ],
-    "Soybean Healthy": [
-        "Proper seed spacing",
-        "Regular crop monitoring",
-        "Maintain proper soil fertility",
-        "Practice crop rotation"
-    ],
-    "Squash Powdery Mildew": [
-        "Plant resistant varieties",
-        "Improve air circulation",
-        "Apply fungicides at first sign",
-        "Avoid overhead watering"
-    ],
-    "Strawberry Leaf Scorch": [
-        "Remove infected leaves",
-        "Maintain proper plant spacing",
-        "Ensure good air circulation",
-        "Apply appropriate fungicides"
-    ],
-    "Strawberry Healthy": [
-        "Regular renovation",
-        "Proper irrigation practices",
-        "Maintain soil fertility",
-        "Monitor for pest issues"
-    ],
-    "Tomato Bacterial Spot": [
-        "Use disease-free seeds",
-        "Rotate crops",
-        "Avoid overhead irrigation",
-        "Apply copper-based sprays"
-    ],
-    "Tomato Early Blight": [
-        "Remove lower infected leaves",
-        "Mulch around plants",
-        "Apply appropriate fungicides",
-        "Maintain plant spacing"
-    ],
-    "Tomato Late Blight": [
-        "Monitor weather conditions",
-        "Apply preventive fungicides",
-        "Remove infected plants",
-        "Improve air circulation"
-    ],
-    "Tomato Leaf Mold": [
-        "Reduce humidity levels",
-        "Improve air circulation",
-        "Remove infected leaves",
-        "Apply appropriate fungicides"
-    ],
-    "Tomato Septoria Leaf Spot": [
-        "Remove infected leaves",
-        "Mulch around plants",
-        "Apply fungicides preventively",
-        "Maintain proper spacing"
-    ],
-    "Tomato Spider Mites": [
-        "Increase humidity levels",
-        "Use insecticidal soaps",
-        "Introduce predatory mites",
-        "Remove heavily infested leaves"
-    ],
-    "Tomato Target Spot": [
-        "Improve air circulation",
-        "Remove infected leaves",
-        "Apply appropriate fungicides",
-        "Avoid overhead irrigation"
-    ],
-    "Tomato Yellow Leaf Curl Virus": [
-        "Control whitefly populations",
-        "Use virus-resistant varieties",
-        "Remove infected plants",
-        "Use reflective mulches"
-    ],
-    "Tomato Mosaic Virus": [
-        "Remove infected plants immediately",
-        "Control weed hosts",
-        "Use virus-resistant varieties",
-        "Sanitize tools between plants"
-    ],
-    "Tomato Healthy": [
-        "Regular pruning",
-        "Proper fertilization",
-        "Monitor for pest issues",
-        "Maintain proper irrigation"
-    ]
-}
+
 
 @app.route('/', methods=['GET'])
 def index():
@@ -292,8 +66,6 @@ def fertilizerrecommendation():
     return render_template('fertilizer-recommendation.html')
 
 
-
-
 from io import BytesIO
 # First, define the precautions dictionary
 
@@ -320,29 +92,29 @@ def predict():
         confidence = predictions[0][predicted_class]
         
         # Get class name and precautions
+
+        genai.configure(api_key="AIzaSyDVwCinSYUfR6sNb4rkA40IwGofB0fQ554")
+        gen_model = genai.GenerativeModel("gemini-1.5-flash")
         class_name = CLASS_NAMES[predicted_class]
-        precautions = DISEASE_PRECAUTIONS.get(class_name, [
-            "Regular monitoring of plants",
-            "Maintain good plant hygiene",
-            "Follow proper irrigation practices",
-            "Consult with local agricultural expert"
-        ])
+        precautions = gen_model.generate_content(f"Provide 3-4 bullet points listing only the precautions and cures for {class_name}. Do not include any additional information or explanations.")
 
         # Create readable result text with precautions immediately after confidence
         result_text = f"The predicted crop disease is {class_name} with {confidence*100:.2f}% confidence.\n\nRecommended Precautions:"
-        precautions_list = "\n".join([f"• {precaution}" for precaution in precautions])
-        full_text = f"{result_text}\n{precautions_list}"
+        # precautions_list = "\n".join([f"• {precaution}" for precaution in precautions])
+        # full_text = f"{result_text}\n{precautions.text}"
         
-        # Return prediction result with both JSON and HTML content
+
         return jsonify({
             "predicted_class": class_name,
             "confidence": float(confidence),
-            "precautions": f"{precautions}",
+            "precautions": f"""
+                    <p data-translate="{precautions.text}">{precautions.text}</p>
+            """,
             "result_html": f"""
                 <div class="prediction-result">
                     <p id="prediction-text">{result_text}</p>
                     <ul style="margin-top: 10px; margin-bottom: 15px;">
-                        {' '.join([f'<li style="margin-bottom: 5px;">{precaution}</li>' for precaution in precautions])}
+                        {''.join([f'<li ">{precaution}</li>' for precaution in precautions])}
                     </ul>
                     <button onclick="readAloud('prediction-text')" class="read-aloud-btn">
                         <i class="fas fa-volume-up"></i> Read Results
@@ -352,7 +124,10 @@ def predict():
                     </button>
                 </div>
             """
-        })
+})
+
+
+
 
     except Exception as e:
         print(f"Error in prediction: {str(e)}")
