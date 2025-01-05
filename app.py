@@ -158,6 +158,8 @@ def translate_content():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+
+gen_model2 = genai.GenerativeModel("gemini-1.5-flash")
 @app.route("/chat")
 def chat_page():
     return render_template("chat.html")
